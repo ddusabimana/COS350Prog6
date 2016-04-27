@@ -3,6 +3,10 @@
   
   Authors: Megan Anderson
   Date: April 25, 2016
+  
+  ***************works with smaller files, not the larger ones yet....
+                 the counts are off by a few hundred....
+
  */
 
 #include <stdlib.h>
@@ -14,7 +18,7 @@
 #include <fcntl.h>
 
 
-int totalLines;
+int totalLines;// the total number of lines in a text file
 
 void countLines(void *fileName);
 
@@ -36,20 +40,32 @@ void countLines(void *fileName)
   char *fName = (char *) fileName;
   int fd;//the file desciptor
   char *buf = malloc(1000 * sizeof(char*));//have a buffer to hold a chunk of text
-  char *aChar;//token to hold the '\n' char
+  char *isGood;//boolean. if there is a value other than NULL, end loop and stop searching for '\n'
   
 if((fd = open(fName, O_RDONLY)) != -1)
     {
       while(read(fd, buf, 1000) != 0)//read in a chunk of text
 	{
-	  //get the "\n" char...
-	  aChar = strtok(buf, "\n");
-	  //if we find one, increment totalLines
-	  if(strcmp(aChar, "\n") == 0)
+	  	  //for testing
+	  //printf("Current total = %d\n",totalLines);
+	  //printf("%s", buf);
+	  isGood = strchr(buf, '\n');//find the first occurance of '\n' and return
+	                             //a string pointer to the first occurance of '\n'
+	  do
 	    {
-	      totalLines++;
-	    }
+	      if(isGood != NULL)//if we continue to find '\n'...
+		{
+		  totalLines++;//increment the number of total lines
+		}
+	      isGood = strchr(isGood + 1, '\n');//find the next occurance of '\n'...
+	      
+	      //for testing...
+	      //printf("Current total = %d\n",totalLines);
+	      //printf("%s", isGood);
+
+	    }while(isGood != NULL);//when we cannot find anymore '\n', exit the loop
 	}
+      printf("\n");
       close(fd);
     }//end of if fopen
 }//end of countLines
