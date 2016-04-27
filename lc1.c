@@ -57,6 +57,10 @@ if((fd = open(fName, O_RDONLY)) != -1)
 		{
 		  totalLines++;//increment the number of total lines
 		}
+		/*
+		I believe the problem occurs when you are trying to get the next '\n' occurance.
+		I think it is miraculously finding additional '\n' characters, but I wonder what you guys think.
+		*/
 	      isGood = strchr(isGood + 1, '\n');//find the next occurance of '\n'...
 	      
 	      //for testing...
