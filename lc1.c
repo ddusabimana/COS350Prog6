@@ -19,7 +19,7 @@ int grandtotalLines = 0;// the total number of lines in all text files
 
 void countLines(void *fileName);
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 { 
   int numOfFiles = 0;
   //go through each of the given files...
@@ -31,6 +31,7 @@ main(int argc, char *argv[])
     }//end of for
 
   printf("Total lines in all files = %d\n", grandtotalLines);
+  exit(0);
 }//end of main
 
 void countLines(void *fileName)

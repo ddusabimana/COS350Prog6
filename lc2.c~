@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+//Line count version 2
+
+void countLines(void *fileName);
+
+main(int argc, char *argv[])
+{ 
+  //go through each of the given files...
+  pid_t child;
+  int i;
+  for(i = 1; i < argc; i++)
+    {
+      child = fork();
+      if(child)
+        {
+	  //Run child logic
+	  countLines(argv[i]);
+          continue;
+        }
+      //Child breaks off two processes, this consumes the second one
+      else if (child == 0)
+        {
+	  printf("Duplicate\n");
+          break;
+        }
+      else
+        {
+          printf("Error\n");
+        }
+
+    }//end of for
+
+  printf("Finished Main Loop\n");
+}//end of main
+
+void countLines(void *fileName)
+{
+  printf("Counting lines for %s\n", (char *)fileName);
+  execlp("lc1", "lc1", (char *)fileName, (char *)0);
+}
