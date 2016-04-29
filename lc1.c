@@ -3,10 +3,7 @@
   
   Authors: Megan Anderson
   Date: April 25, 2016
-  
-  ***************works with smaller files, not the larger ones yet....
-                 the counts are off by a few....
-
+  Completed: April 28, 2016
  */
 
 #include <stdlib.h>
@@ -18,58 +15,50 @@
 #include <fcntl.h>
 
 
-int totalLines;// the total number of lines in a text file
+int grandtotalLines = 0;// the total number of lines in all text files
 
 void countLines(void *fileName);
 
 main(int argc, char *argv[])
-{
-  if(argc != 2)
+{ 
+  int numOfFiles = 0;
+  //go through each of the given files...
+  int i;
+  for(i = 1; i < argc; i++)
     {
-      printf("Missing file name!\n");
-      exit(1);
-    }
-  
-  totalLines = 0;
-  countLines(argv[1]);
-  printf("Total lines = %d\n", totalLines);
+      ++numOfFiles;
+      countLines(argv[i]);
+    }//end of for
+
+  printf("Total lines in all files = %d\n", grandtotalLines);
 }//end of main
 
 void countLines(void *fileName)
 {
   char *fName = (char *) fileName;
   int fd;//the file desciptor
+  FILE *fpointer;//the file pointer
   char *buf = malloc(1000 * sizeof(char*));//have a buffer to hold a chunk of text
   char *isGood;//boolean. if there is a value other than NULL, end loop and stop searching for '\n'
   
 if((fd = open(fName, O_RDONLY)) != -1)
     {
-      while(read(fd, buf, 1000) != 0)//read in a chunk of text
+      int n, totalLines = 0;
+      while((n = read(fd, buf, 1000)) != 0)//read in a chunk of text
 	{
-	  	  //for testing
-	  //printf("Current total = %d\n",totalLines);
-	  //printf("%s", buf);
-	  isGood = strchr(buf, '\n');//find the first occurance of '\n' and return
-	                             //a string pointer to the first occurance of '\n'
-	  do
+	  char aChar = ' ';
+	  int i = 0;
+	  for (i = 0; i < n; i++)
 	    {
-	      if(isGood != NULL)//if we continue to find '\n'...
+	      aChar = buf[i];//get a character from the buffer...
+	      if(aChar == '\n')
 		{
-		  totalLines++;//increment the number of total lines
-		}
-		/*
-		I believe the problem occurs when you are trying to get the next '\n' occurance.
-		I think it is miraculously finding additional '\n' characters, but I wonder what you guys think.
-		*/
-	      isGood = strchr(isGood + 1, '\n');//find the next occurance of '\n'...
-	      
-	      //for testing...
-	      //printf("Current total = %d\n",totalLines);
-	      //printf("%s", isGood);
-
-	    }while(isGood != NULL);//when we cannot find anymore '\n', exit the loop
+		  totalLines++;//increase the number of lines...
+		}//end of if
+	    }//end of while	  
 	}
-      printf("\n");
       close(fd);
-    }//end of if fopen
+      printf("%d lines in %s\n", totalLines, fName);//print out the total number of lines...
+      grandtotalLines += totalLines;
+    }//end of if ...open
 }//end of countLines
