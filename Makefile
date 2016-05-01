@@ -1,3 +1,4 @@
+
 # makefile for prog6                                                            
 
 #lc1 lc1.c                                                                      
