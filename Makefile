@@ -6,7 +6,7 @@
 #lc2 lc2.c                                                                      
 #       gcc lc2.c -o lc2                                                        
 #lc3 lc3.c                                                                      
-#       gcc lc3.c -o lc3 -lpthread                                              
+#	gcc -o lc3 lc3.c -pthread                                              
 
 all : lc1 lc2 lc3
 
