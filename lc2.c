@@ -1,3 +1,11 @@
+
+/*=======================================================
+ Project: 6
+ Name: lc2.c
+ April 29, 2016
+ Author: Samuel Capotosto
+ =========================================================*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
